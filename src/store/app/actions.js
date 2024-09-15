@@ -1,6 +1,8 @@
 import { loaderPush, setData, setError, loaderRemove } from "./appSlice";
 import { fetchUser } from "../../api/user";
 import { authUser } from "../../api/auth";
+import { checkResponse } from "../../utils/request";
+import { setAccessToken } from "../../utils/utils";
 
 export const fetchUserSettings = (payload) => async (dispatch) => {
     try {
@@ -31,20 +33,21 @@ export const fetchUserSettings = (payload) => async (dispatch) => {
 
 export const authenticateUser = (payload) => async (dispatch) => {
     try {
-        console.log(payload)
 
         dispatch(loaderPush({
             label: 'Loging in',
             actionType: 'AUTHENTICATE_USER' 
         }));
-        console.log("auth")
         
-        const response = await authUser();
-        console.log(response)
-        if (response.status === 200) {
+        const response = await authUser(payload);
+        const check = checkResponse(response);
 
+        if (check) {
+            const token = response.data.token; 
+            console.log(token)
+            setAccessToken(token)
+            // setAccessToken()
             // dispatch(setData(response.data)); // Assuming response.data contains user data
-            console.log("ok")
         } else {
             throw new Error('Failed to fetch user data');
         }
