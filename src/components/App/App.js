@@ -9,9 +9,9 @@ import { fetchUserSettings } from '../../store/app/actions';
 const App = () => {
 	const dispatch = useDispatch();
 
-	useEffect(() => {
-		// dispatch(fetchUserSettings());
-	}, [dispatch]);
+	// useEffect(() => {
+	// 	// dispatch(fetchUserSettings());
+	// }, [dispatch]);
 
     return (<>
       

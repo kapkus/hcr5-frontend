@@ -5,6 +5,7 @@ import { getAccessToken } from "../../utils/utils";
 import ControlPanel from "../ControlPanel/ControlPanel";
 
 const isAuthenticated = () => {
+    console.log(!!getAccessToken())
     return !!getAccessToken();
 }
 
@@ -12,11 +13,11 @@ const router = createBrowserRouter(
     [
         {
             path: '/login',
-            element: <Login/>,
+            element: <Login />,
             index: true
         },
         {
-            element: <ProtectedRoute isAuthenticated={isAuthenticated()} />,
+            element: <ProtectedRoute isAuthenticated={isAuthenticated} />,
             children: [
                 {
                     path: "/",

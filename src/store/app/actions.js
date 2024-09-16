@@ -31,7 +31,7 @@ export const fetchUserSettings = (payload) => async (dispatch) => {
     }
 };
 
-export const authenticateUser = (payload) => async (dispatch) => {
+export const authenticateUser = (data, onSuccess) => async (dispatch) => {
     try {
 
         dispatch(loaderPush({
@@ -39,7 +39,7 @@ export const authenticateUser = (payload) => async (dispatch) => {
             actionType: 'AUTHENTICATE_USER' 
         }));
         
-        const response = await authUser(payload);
+        const response = await authUser(data);
         const check = checkResponse(response);
 
         if (check) {
@@ -48,6 +48,12 @@ export const authenticateUser = (payload) => async (dispatch) => {
             setAccessToken(token)
             // setAccessToken()
             // dispatch(setData(response.data)); // Assuming response.data contains user data
+
+            // return true
+            if(onSuccess) {
+                onSuccess();
+            }
+
         } else {
             throw new Error('Failed to fetch user data');
         }

@@ -1,14 +1,23 @@
-import { Button, FormControl, Input, TextField } from "@mui/material";
-import React, {useState} from "react"
-import useAuthUser from "../../hooks/api/useAuthUser";
+import { Button, FormControl, TextField } from "@mui/material";
+import React, {useEffect, useState} from "react"
 import { authenticateUser } from "../../store/app/actions";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getAccessToken } from "../../utils/utils";
 
 const Login = () => {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({ username: '', password: '' });
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        const accessToken = getAccessToken();
+        if (accessToken) {
+            navigate('/', {replace: true});
+        }
+    }, [navigate]);
 
     const validate = () => {
         let validationErrors = { username: '', password: '' };
@@ -40,30 +49,37 @@ const Login = () => {
             dispatch(authenticateUser({
                 username: username,
                 password: password
-            }));
+            }, 
+            () => {
+                navigate('/', {replace: true});
+            }
+        ));
         }
     }
 
     return <div style={{margin: 100}}>
-        <FormControl onSubmit={handleSubmit}>
-            <TextField 
-                label={"Username"}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                error={!!errors.username}
-                helperText={errors.username}
-                margin={"normal"}
-            />
-            <TextField 
-                label={"Password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                error={!!errors.password}
-                helperText={errors.password}
-                margin={"normal"}
-            />
-            <Button type={"submit"} onClick={handleSubmit} variant={"contained"} >Login</Button>
-        </FormControl>
+        <form onSubmit={handleSubmit}>
+            <FormControl >
+                <TextField 
+                    label={"Username"}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    error={!!errors.username}
+                    helperText={errors.username}
+                    margin={"normal"}
+                />
+                <TextField 
+                    label={"Password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    error={!!errors.password}
+                    helperText={errors.password}
+                    margin={"normal"}
+                />
+                <Button type={"submit"} variant={"contained"} >Login</Button>
+            </FormControl>
+        </form>
+        
     </div>
 }
 
