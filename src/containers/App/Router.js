@@ -1,11 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import Login from "../Login/Login";
+import Login from "../../components/Login/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import { getAccessToken } from "../../utils/utils";
-import ControlPanel from "../ControlPanel/ControlPanel";
+import Dashboard from "../Dashboard/Dashboard";
 
 const isAuthenticated = () => {
-    console.log(!!getAccessToken())
     return !!getAccessToken();
 }
 
@@ -21,7 +20,7 @@ const router = createBrowserRouter(
             children: [
                 {
                     path: "/",
-                    element: <ControlPanel />
+                    element: <Dashboard />
                 },
             ]
         },

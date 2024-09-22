@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 import { Box, Modal, Button } from "@mui/material"
 import { useState } from 'react';
 import { FiSettings } from "react-icons/fi";
+import { useDispatch } from "react-redux";
 // import useFetchSettings from "../../hooks/api/useFetchSettings";
+import { fetchUserAction } from "../../store/user/actions";
 
 const style = {
     position: 'absolute',
@@ -17,6 +19,7 @@ const style = {
   };
 
 const SettingsModal = () => {
+    const dispatch = useDispatch();
     // const {open, onClose} = props;
 
     // const fetchSettings = useFetchSettings();
@@ -27,6 +30,13 @@ const SettingsModal = () => {
     const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    useEffect(() => {
+        if(open === true){
+            console.log("opened")
+            dispatch(fetchUserAction());
+        }
+    }, [open])
 
     const handleSettingsSave = () => {
 

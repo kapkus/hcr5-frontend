@@ -1,35 +1,9 @@
-import { loaderPush, setData, setError, loaderRemove } from "./appSlice";
+import { loaderPush, loaderRemove } from "./appSlice";
 import { fetchUser } from "../../api/user";
 import { authUser } from "../../api/auth";
 import { checkResponse } from "../../utils/request";
 import { setAccessToken } from "../../utils/utils";
-
-export const fetchUserSettings = (payload) => async (dispatch) => {
-    try {
-        dispatch(loaderPush({
-            label: 'Loading user settings',
-            actionType: 'FETCH_USER_SETTINGS' 
-        }));
-        console.log("fetch")
-        
-        const response = await fetchUser();
-        console.log(response)
-        if (response.status === 200) {
-
-            dispatch(setData(response.data)); // Assuming response.data contains user data
-            console.log("ok")
-        } else {
-            throw new Error('Failed to fetch user data');
-        }
-    
-    } catch (error) {
-        // Handle error
-        dispatch(setError(error.message || 'Something went wrong'));  
-    } finally {
-        // End loader
-        dispatch(loaderRemove({ actionType: 'FETCH_USER_SETTINGS' }));
-    }
-};
+import { enqueueNotification } from "../../utils/utils";
 
 export const authenticateUser = (data, onSuccess) => async (dispatch) => {
     try {
@@ -39,30 +13,24 @@ export const authenticateUser = (data, onSuccess) => async (dispatch) => {
             actionType: 'AUTHENTICATE_USER' 
         }));
         
-        const response = await authUser(data);
-        const check = checkResponse(response);
+        const result = await authUser(data);
+        const check = checkResponse(result);
 
         if (check) {
-            const token = response.data.token; 
-            console.log(token)
+            const token = result.data.token; 
             setAccessToken(token)
-            // setAccessToken()
-            // dispatch(setData(response.data)); // Assuming response.data contains user data
 
-            // return true
             if(onSuccess) {
                 onSuccess();
             }
 
         } else {
-            throw new Error('Failed to fetch user data');
+            enqueueNotification(result.response.data)
         }
     
     } catch (error) {
-        // Handle error
-        dispatch(setError(error.message || 'Something went wrong'));  
+        throw new Error('Failed to fetch user data');
     } finally {
-        // End loader
         dispatch(loaderRemove({ actionType: 'AUTHENTICATE_USER' }));
     }
 };

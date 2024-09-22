@@ -1,6 +1,9 @@
+import { getAccessToken } from "../utils/utils";
 import axiosInstance from "./axiosInstance";
 
-export const fetchUser = (token, data) => {
+export const fetchUser = (data) => {
+    const token = getAccessToken();
+
     return axiosInstance.get('/user', {
         headers: {
             Authorization: `Bearer ${token}`,

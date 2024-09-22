@@ -8,6 +8,7 @@ const initialState = {
 	step: 1,
 	holdInterval: 100,
 
+	notifications: [],
 	loading: []
 }
 
@@ -17,6 +18,6 @@ const appSlice = createSlice({
 	reducers: appReducer,
 });
 
-export const { updateAxisX, loaderPush, loaderRemove, setData, setError } = appSlice.actions;
+export const { updateAxisX, loaderPush, loaderRemove } = appSlice.actions;
 
 export default appSlice.reducer;

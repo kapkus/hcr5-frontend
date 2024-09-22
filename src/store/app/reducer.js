@@ -10,13 +10,7 @@ const appReducer = {
     loaderRemove: (state, action) => {
         const { actionType } = action.payload;
         state.loading = state.loading.filter(item => item.actionType !== actionType);
-    },
-    setData: (state, action) => {
-        state.data = action.payload;
-    },
-    setError: (state, action) => {
-        state.error = action.payload;
-    },
+    }
 };
 
 export default appReducer;
