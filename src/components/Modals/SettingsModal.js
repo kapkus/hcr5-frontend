@@ -13,19 +13,13 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 800,
     bgcolor: 'background.paper',
-    // border: '2px solid #000',
     boxShadow: 24,
     padding: 2,
   };
 
 const SettingsModal = () => {
     const dispatch = useDispatch();
-    // const {open, onClose} = props;
 
-    // const fetchSettings = useFetchSettings();
-    // useEffect(() => {
-    //     fetchSettings();
-    // }, [fetchSettings])
 
     const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
