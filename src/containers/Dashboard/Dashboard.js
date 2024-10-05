@@ -6,15 +6,23 @@ import { fetchUserAction } from "../../store/user/actions";
 import { useSelector } from "react-redux";
 import { AppBar, Toolbar, Box } from "@mui/material";
 import AppToolbar from "./AppToolbar";
+import config from "../../config/config";
+import { getAccessToken } from "../../utils/utils";
+import { initializeSocket } from "../../store/socket/socketSlice";
+
+const socketUrl = `${config.WSS_URL}:${config.WSS_PORT}`;
 
 const Dashboard = () => {
     const dispatch = useDispatch();
-	const userState = useSelector((state) => state.user);
-    console.log(userState)
 
     useEffect(() => {
         dispatch(fetchUserAction());
-    }, [])
+        const token = getAccessToken();
+		if(token){
+			console.log("test")
+			dispatch(initializeSocket(socketUrl));
+		}
+    }, [dispatch])
 
     return (
         <Box 

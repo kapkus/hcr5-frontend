@@ -3,6 +3,10 @@ const appReducer = {
         const {x} = action.payload;
         state.x += x;
     },
+    // updateAxis: (state, action) => {
+    //     const {message} = action.payload;
+    //     state.x += x;
+    // },
     loaderPush: (state, action) => {
         const { label, actionType } = action.payload;
         state.loading.push({ label, actionType });

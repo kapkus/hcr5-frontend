@@ -2,7 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import userReducer from './reducer';
 
 const initialState = {
-	data: {},
+	data: {
+		userId: '', 
+		name: '',
+		userType: '',
+		settings: {}
+	},
 
 	loading: []
 }

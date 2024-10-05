@@ -29,7 +29,7 @@ export const authenticateUser = (data, onSuccess) => async (dispatch) => {
         }
     
     } catch (error) {
-        throw new Error('Failed to fetch user data');
+        enqueueNotification(error)
     } finally {
         dispatch(loaderRemove({ actionType: 'AUTHENTICATE_USER' }));
     }

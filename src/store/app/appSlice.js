@@ -5,8 +5,7 @@ const initialState = {
 	x: 0,
 	y: 0,
 	z: 0,
-	step: 1,
-	holdInterval: 100,
+	
 
 	notifications: [],
 	loading: []
