@@ -22,7 +22,7 @@ const StatusIcon = ({status}) => {
     }
     
     return (
-        <svg width="40px" height="40px" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+        <svg width="24px" height="24px" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
             <circle cx="6" cy="6" r="5.5" fill={primaryColor} stroke={borderColor} strokeWidth="1" />
             <circle cx="8.5" cy="3.5" r="1.5" fill="rgba(255, 255, 255, 0.4)" />
         </svg>

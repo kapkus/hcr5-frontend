@@ -14,7 +14,13 @@ const appReducer = {
     loaderRemove: (state, action) => {
         const { actionType } = action.payload;
         state.loading = state.loading.filter(item => item.actionType !== actionType);
-    }
+    },
+    updateAxes(state, action) {
+        const { x, y, z } = action.payload;
+        state.x = x;
+        state.y = y;
+        state.z = z;
+    },
 };
 
 export default appReducer;

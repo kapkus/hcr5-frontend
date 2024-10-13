@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Socket } from '../../utils/Socket';
 import { getAccessToken } from '../../utils/utils';
+import socketReducer from './reducer';
 
 const initialState = {
   x: 0,
@@ -16,29 +17,7 @@ const initialState = {
 const socketSlice = createSlice({
   name: 'socket',
   initialState,
-  reducers: {
-    updateAxisX(state, action) {
-      state.x = action.payload;
-    },
-    loaderPush(state, action) {
-      state.loading.push(action.payload);
-    },
-    loaderRemove(state, action) {
-      state.loading = state.loading.filter(item => item !== action.payload);
-    },
-    addNotification(state, action) {
-      state.notifications.push(action.payload);
-    },
-    updateStateFromMessage(state, action) {
-      const { x, y, z } = action.payload;
-      state.x = x;
-      state.y = y;
-      state.z = z;
-    },
-    setSocketStatus(state, action) {
-      state.status = action.payload;
-    }
-  },
+  reducers: socketReducer
 });
 
 let socketInstance;
@@ -60,9 +39,9 @@ export const initializeSocket = (url) => (dispatch) => {
 
     socketInstance.on('message', (event) => {
       const data = JSON.parse(event.data);
-        console.log(data)
       if (data.type === 'update') {
-        dispatch(updateStateFromMessage(data.payload));
+        // console.log(data)
+        dispatch(updateStateFromMessage(data));
       } else if (data.type === 'notification') {
         dispatch(addNotification(data.payload));
       }
@@ -97,6 +76,6 @@ export const sendSocketMessage = (message) => () => {
     }
 };
 
-export const { updateAxisX, loaderPush, loaderRemove, addNotification, updateStateFromMessage, setSocketStatus } = socketSlice.actions;
+export const { updateAxisX, loaderPush, loaderRemove, addNotification, setSocketStatus, updateStateFromMessage } = socketSlice.actions;
 
 export default socketSlice.reducer;
