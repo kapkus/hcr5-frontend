@@ -8,19 +8,23 @@ import { AppBar, Toolbar, Box } from "@mui/material";
 import AppToolbar from "./AppToolbar";
 import config from "../../config/config";
 import { getAccessToken } from "../../utils/utils";
-import { initializeSocket } from "../../store/socket/socketSlice";
+import { initializeSocket } from "../../store/socket/socketInstance";
+import { useFetchUserQuery } from "../../store/user/userApi";
 
 const socketUrl = `${config.WSS_URL}:${config.WSS_PORT}`;
 
 const Dashboard = () => {
     const dispatch = useDispatch();
+    const { data, error, isLoading } = useFetchUserQuery();
+
 
     useEffect(() => {
-        dispatch(fetchUserAction());
+        // dispatch(fetchUserAction());
         const token = getAccessToken();
 		if(token){
 			console.log("test")
-			dispatch(initializeSocket(socketUrl));
+            dispatch({ type: 'socket/initialize', payload: { url: socketUrl } });
+			// dispatch(initializeSocket(socketUrl));
 		}
     }, [dispatch])
 

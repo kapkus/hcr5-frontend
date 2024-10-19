@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import userReducer from './reducer';
+import { userApi } from './userApi';
 
 const initialState = {
 	data: {
@@ -9,15 +9,39 @@ const initialState = {
 		settings: {}
 	},
 
+	userSettings: {
+		step: null,
+		holdInterval: null
+	},
+
 	loading: []
 }
 
 const userSlice = createSlice({
 	name: 'user',
 	initialState: initialState,
-	reducers: userReducer,
+	reducers: {
+		setUserError: (state, action) => {
+			state.error = action.payload;
+		},
+		setStep: (state, action) => {
+			state.userSettings.step = action.payload;
+		},
+		setInterval: (state, action) => {
+			state.userSettings.holdInterval = action.payload;
+		}
+	},
+	extraReducers: (builder) => {
+		builder.addMatcher(
+			userApi.endpoints.fetchUser.matchFulfilled,
+			(state, {payload}) => {
+				if(payload.settings){
+					state.userSettings = payload.settings;
+				}
+			}
+		)
+	}
 });
 
-export const { setUserData, setUserError } = userSlice.actions;
-
+export const { setUserError, setInterval, setStep } = userSlice.actions;
 export default userSlice.reducer;

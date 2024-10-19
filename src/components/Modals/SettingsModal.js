@@ -3,8 +3,10 @@ import { Box, Modal, Button } from "@mui/material"
 import { useState } from 'react';
 import { FiSettings } from "react-icons/fi";
 import { useDispatch } from "react-redux";
+import { useFetchUserQuery } from "../../store/user/userApi";
+import { useSelector } from "react-redux";
 // import useFetchSettings from "../../hooks/api/useFetchSettings";
-import { fetchUserAction } from "../../store/user/actions";
+// import { fetchUserAction } from "../../store/user/actions";
 
 const style = {
     position: 'absolute',
@@ -19,8 +21,12 @@ const style = {
 
 const SettingsModal = () => {
     const dispatch = useDispatch();
+    // const {data, isError, isLoading} = useSelector(state => state.user)
+    const userData = useSelector((state) => state.userApi.queries[`fetchUser(undefined)`]?.data);
 
+    // const { data, error, isLoading } = useFetchUserQuery();
 
+    console.log(userData);
     const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -28,7 +34,8 @@ const SettingsModal = () => {
     useEffect(() => {
         if(open === true){
             console.log("opened")
-            dispatch(fetchUserAction());
+            
+            // dispatch(fetchUserAction());
         }
     }, [open])
 

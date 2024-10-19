@@ -1,57 +1,34 @@
 import React from 'react';
-import useWebSocket from 'react-use-websocket';
 import ControlRow from './ControlRow';
-// import { useStateValue } from '../../store/StateProvider';
 import "./style.css";
+import { useSelector } from 'react-redux';
 import StepController from './StepController';
-import { useDispatch, useSelector } from 'react-redux';
-import {updateAxisX} from "../../store/app/appSlice";
-import { sendSocketMessage } from '../../store/socket/socketSlice';
-import { Button } from '@mui/material';
+import { useFetchUserQuery } from '../../store/user/userApi';
+import LoadingWrapper from '../Utils/LoadingWrapper';
 
 const ControlPanel = () => {
-	// const [{ app }, dispatch] = useStateValue();
-	// const {x, y, z} = app;
-	// console.log(app)
-	const dispatch = useDispatch();
-	const { x, y, z, step, holdInterval, loading } = useSelector((state) => state.app);
-	// const socketUrl = 'ws://localhost:8000';
-
-	// const {
-	// 	sendMessage,
-	// 	lastMessage,
-	// 	readyState,
-	// } = useWebSocket(socketUrl, {protocols: 'echo-protocol'});
-
-	const handleClick = () => {
-		const msg = {
-			forwarded: true,
-			type: "moveAxis",
-			message: "blablabla"
-		}
-		dispatch(sendSocketMessage(msg))
-		// sendMessage(JSON.stringify(msg));
-	};
-
-	console.log(x, y, z)
-
+    const { isLoading } = useFetchUserQuery();
+    const socketData = useSelector((state) => state.socket);
+	
 	return (
-		<div className={'control-panel-container'}>
-			<Button onClick={handleClick}>test</Button>
-			<ControlRow axis={"x"} 
-						cord={x} 
-						// setCord={(e) => {handleAxisChange(e, "x")}}
-			/>
-			<ControlRow axis={"y"} 
-						cord={y} 
-						// setCord={(e) => {handleAxisChange(e, "y")}}
-			/>
-			<ControlRow axis={"z"} 
-						cord={z} 
-						// setCord={(e) => {handleAxisChange(e, "z")}}
-			/>
-			<StepController />
-		</div>		
+		<LoadingWrapper isLoading={isLoading} >
+			<div className={'control-panel-container'}>
+				<ControlRow axis={"x"} 
+							cord={socketData.x} 
+							// setCord={(e) => {handleAxisChange(e, "x")}}
+				/>
+				<ControlRow axis={"y"} 
+							cord={socketData.y} 
+							// setCord={(e) => {handleAxisChange(e, "y")}}
+				/>
+				<ControlRow axis={"z"} 
+							cord={socketData.z} 
+							// setCord={(e) => {handleAxisChange(e, "z")}}
+				/>
+				<StepController />
+			</div>		
+		</LoadingWrapper>
+		
 	);
 };
 

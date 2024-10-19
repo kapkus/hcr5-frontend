@@ -14,6 +14,7 @@ export const authenticateUser = (data, onSuccess) => async (dispatch) => {
         }));
         
         const result = await authUser(data);
+        console.log(result)
         const check = checkResponse(result);
 
         if (check) {
@@ -29,6 +30,7 @@ export const authenticateUser = (data, onSuccess) => async (dispatch) => {
         }
     
     } catch (error) {
+        console.log(error)
         enqueueNotification(error)
     } finally {
         dispatch(loaderRemove({ actionType: 'AUTHENTICATE_USER' }));
