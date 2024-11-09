@@ -34,8 +34,8 @@ const Login = () => {
         if (!password) {
             validationErrors.password = 'Password required';
             isValid = false;
-        } else if (password.length < 6) {
-            validationErrors.password = 'Password length must be at least 6 characters';
+        } else if (password.length < 3) {
+            validationErrors.password = 'Password length must be at least 3 characters';
             isValid = false;
         }
 

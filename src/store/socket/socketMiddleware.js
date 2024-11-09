@@ -1,6 +1,7 @@
 import { Socket } from '../../utils/Socket';
 import { getAccessToken } from '../../utils/utils';
 import { setSocketStatus, updateStateFromMessage, addNotification } from './socketSlice';
+import handleSocketMessage from './handleSocketMessage';
 
 let socketInstance;
 const reconnectInterval = 5000;
@@ -22,11 +23,7 @@ const socketMiddleware = (store) => {
 
                     socketInstance.on('message', (event) => {
                         const data = JSON.parse(event.data);
-                        if (data.type === 'update') {
-                            store.dispatch(updateStateFromMessage(data));
-                        } else if (data.type === 'notification') {
-                            store.dispatch(addNotification(data.payload));
-                        }
+                        handleSocketMessage(data, store);
                     });
 
                     socketInstance.on('error', (error) => {

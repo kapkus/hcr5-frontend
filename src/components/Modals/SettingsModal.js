@@ -22,11 +22,11 @@ const style = {
 const SettingsModal = () => {
     const dispatch = useDispatch();
     // const {data, isError, isLoading} = useSelector(state => state.user)
-    const userData = useSelector((state) => state.userApi.queries[`fetchUser(undefined)`]?.data);
+    // const userData = useSelector((state) => state.userApi.queries[`fetchUser(undefined)`]?.data);
 
     // const { data, error, isLoading } = useFetchUserQuery();
 
-    console.log(userData);
+    // console.log(userData);
     const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);

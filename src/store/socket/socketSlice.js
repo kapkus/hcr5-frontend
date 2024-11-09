@@ -11,7 +11,8 @@ const initialState = {
 	holdInterval: 100,
 	notifications: [],
 	loading: [],
-	status: 'disconnected'
+	status: 'disconnected',
+	servoStatus: 'off'
 };
 
 const socketSlice = createSlice({
@@ -37,6 +38,14 @@ const socketSlice = createSlice({
 			state.x = action.payload.x;
 			state.y = action.payload.y;
 			state.z = action.payload.z;
+		},
+		updatePosition: (state, action) => {
+			state.x = action.payload.x;
+			state.y = action.payload.y;
+			state.z = action.payload.z;
+		},
+		updateServoStatus: (state, action) => {
+			state.servoStatus = action.payload;
 		}
   	},
 });
@@ -47,7 +56,9 @@ export const {
 	loaderRemove,
 	addNotification,
 	setSocketStatus,
-	updateStateFromMessage
+	updateStateFromMessage,
+	updateServoStatus,
+	updatePosition
 } = socketSlice.actions;
 
 export default socketSlice.reducer;

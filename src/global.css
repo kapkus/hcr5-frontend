@@ -22,3 +22,27 @@ html {
     cursor: pointer;
     font-size: 36px;
 }
+
+.toolbar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 8px;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.toolbar .MuiIconButton-root {
+    color: white;
+    transition: none;
+    transform: none;
+}
+
+/* .toolbar .MuiIconButton-root:hover,
+.toolbar .MuiIconButton-root:focus {
+    background-color: rgba(0, 0, 0, 0.3);
+    transform: none;
+    box-shadow: none;
+} */

@@ -10,12 +10,13 @@ import config from "../../config/config";
 import { getAccessToken } from "../../utils/utils";
 import { initializeSocket } from "../../store/socket/socketInstance";
 import { useFetchUserQuery } from "../../store/user/userApi";
+import Scene from "../../components/Scene/Canvas";
 
 const socketUrl = `${config.WSS_URL}:${config.WSS_PORT}`;
 
 const Dashboard = () => {
     const dispatch = useDispatch();
-    const { data, error, isLoading } = useFetchUserQuery();
+    // const { data, error, isLoading } = useFetchUserQuery();
 
 
     useEffect(() => {
@@ -39,11 +40,18 @@ const Dashboard = () => {
         >    
             <Box
                 sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
                     flexGrow: 1,
                     overflow: 'auto'
                 }}
             >
-                <ControlPanel />
+                <Box sx={{ flexShrink: 0, padding: '4px' }}>
+                    <ControlPanel />
+                </Box>
+                <Box sx={{ flexGrow: 1, overflow: 'auto', minHeight: 600}}>
+                    <Scene />
+                </Box>
             </Box>
             <AppBar position="static" sx={{ top: 'auto', bottom: 0 }}>
                 <AppToolbar />
