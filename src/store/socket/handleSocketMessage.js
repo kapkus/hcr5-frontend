@@ -1,16 +1,13 @@
-import { updateStateFromMessage, addNotification, updateServoStatus, updatePosition } from './socketSlice';
+import { enqueueNotification } from '../../utils/utils';
+import { updateStateFromMessage, addNotification, updateServoStatus, updatePosition, updateSpeed } from './socketSlice';
 
 const handleSocketMessage = (data, store) => {
-
+    
     switch (data.type) {
-        // case 'update':
-        //     store.dispatch(updateStateFromMessage(data));
-        //     break;
         case 'notification':
-            store.dispatch(addNotification(data.payload));
+            enqueueNotification(data);
             break;
         case 'update':
-            console.log(data)
             if(!data.value){ return }
 
             Object.entries(data.value).forEach(([key, value]) => {
@@ -21,10 +18,14 @@ const handleSocketMessage = (data, store) => {
                     case "servo":
                         store.dispatch(updateServoStatus(value));
                     break;
+                    case "speed":
+                        console.log(value)
+                        store.dispatch(updateSpeed(value));
+                    break;
                 }
             });
            
-        break;
+            break;
     }
 
 }

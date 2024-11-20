@@ -25,3 +25,22 @@
     justify-content: center;
     cursor: pointer;
 }
+
+
+/* .app-container {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100vh !important;
+    width: 100vh;
+    background-color: red;
+} */
+
+@media (max-width: 1080px) {
+    /* .app-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100vh;
+        background-color: red;
+    } */
+}

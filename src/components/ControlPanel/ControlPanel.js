@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ControlRow from './ControlRow';
 import "./style.css";
 import { useSelector } from 'react-redux';
-import StepController from './StepController';
+import StepController from './SpeedControler';
 import { useFetchUserQuery } from '../../store/user/userApi';
 import LoadingWrapper from '../Utils/LoadingWrapper';
 import HomeButton from './HomeButton';
@@ -33,8 +33,10 @@ const ControlPanel = () => {
 								// setCord={(e) => {handleAxisChange(e, "z")}}
 					/>
 					<StepController />
-					<HomeButton />
-					<ServoState />
+					<div style={{display: "flex", gap: 10}}>
+						<HomeButton />
+						<ServoState />	
+					</div>
 				</div>
 			</div>
 		</LoadingWrapper>

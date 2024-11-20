@@ -2,18 +2,17 @@ import { configureStore, createListenerMiddleware, getDefaultMiddleware } from "
 import appSlice from "./app/appSlice";
 import userSlice from "./user/userSlice";
 import socketSlice from "./socket/socketSlice";
-import { Socket } from "../utils/Socket";
 import { userApi } from "./user/userApi";
 import socketMiddleware from "./socket/socketMiddleware";
-
-const socket = new Socket();
+import scannerSlice from "./scanner/scannerSlice";
 
 export const store = configureStore({
     reducer: {
         app: appSlice,
         user: userSlice,
         [userApi.reducerPath]: userApi.reducer,
-        socket: socketSlice
+        socket: socketSlice,
+        scanner: scannerSlice
         // app: appReducer
     },
     middleware: (getDefaultMiddleware) => 

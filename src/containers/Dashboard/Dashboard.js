@@ -8,9 +8,8 @@ import { AppBar, Toolbar, Box } from "@mui/material";
 import AppToolbar from "./AppToolbar";
 import config from "../../config/config";
 import { getAccessToken } from "../../utils/utils";
-import { initializeSocket } from "../../store/socket/socketInstance";
-import { useFetchUserQuery } from "../../store/user/userApi";
-import Scene from "../../components/Scene/Canvas";
+import Scene from "../../components/Scene/Scene";
+import ScannerPanel from "../../components/ScannerPanel/ScannerPanel";
 
 const socketUrl = `${config.WSS_URL}:${config.WSS_PORT}`;
 
@@ -30,24 +29,11 @@ const Dashboard = () => {
     }, [dispatch])
 
     return (
-        <Box 
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100vh',
-                width: '100vw',
-            }}
-        >    
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexGrow: 1,
-                    overflow: 'auto'
-                }}
-            >
-                <Box sx={{ flexShrink: 0, padding: '4px' }}>
+        <Box className='app-wrapper' >    
+            <Box className='app-container'>
+                <Box className='interface-container'>
                     <ControlPanel />
+                    <ScannerPanel />
                 </Box>
                 <Box sx={{ flexGrow: 1, overflow: 'auto', minHeight: 600}}>
                     <Scene />

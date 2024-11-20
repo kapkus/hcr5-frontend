@@ -55,8 +55,13 @@ const socketMiddleware = (store) => {
 };
 
 export const sendSocketMessage = (message) => {
-    if (socketInstance) {
+
+    console.log(socketInstance)
+
+    if (socketInstance && socketInstance.socket.readyState === WebSocket.OPEN) {
         socketInstance.send(message);
+    } else if (socketInstance) {
+        console.error('WebSocket is not open');
     } else {
         console.error('WebSocket is not connected');
     }

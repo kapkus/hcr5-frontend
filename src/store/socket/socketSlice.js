@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Socket } from '../../utils/Socket';
 import { getAccessToken } from '../../utils/utils';
-import socketReducer from './reducer';
 
 const initialState = {
 	x: 0,
@@ -12,7 +11,8 @@ const initialState = {
 	notifications: [],
 	loading: [],
 	status: 'disconnected',
-	servoStatus: 'off'
+	servoStatus: 'off',
+	speed: 0
 };
 
 const socketSlice = createSlice({
@@ -46,6 +46,9 @@ const socketSlice = createSlice({
 		},
 		updateServoStatus: (state, action) => {
 			state.servoStatus = action.payload;
+		},
+		updateSpeed: (state, action) => {
+			state.speed = action.payload;
 		}
   	},
 });
@@ -58,7 +61,8 @@ export const {
 	setSocketStatus,
 	updateStateFromMessage,
 	updateServoStatus,
-	updatePosition
+	updatePosition,
+	updateSpeed
 } = socketSlice.actions;
 
 export default socketSlice.reducer;
