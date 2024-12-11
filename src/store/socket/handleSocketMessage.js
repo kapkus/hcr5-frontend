@@ -24,7 +24,9 @@ const handleSocketMessage = (data, store) => {
                     break;
                 }
             });
-           
+            break;
+        case 'lidarSocket': 
+            console.log('lidarMsg', data);
             break;
     }
 

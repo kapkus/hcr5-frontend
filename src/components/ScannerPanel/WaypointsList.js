@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { List, ListItem, ListItemText, Button } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { ImFileEmpty } from "react-icons/im";
-import { addWaypoint } from "../../store/scanner/scannerSlice";
+import { addWaypoint, setZLevel } from "../../store/scanner/scannerSlice";
 import appConfig from "../../config/appConfig";
 import SingleWaypoint from "./SingleWaypoint";
 
@@ -10,16 +10,24 @@ const {fontDefault} = appConfig.constants.colors;
 
 const WaypointsList = () => {
     const dispatch = useDispatch();
-    const {waypoints} = useSelector((state) => state.scanner);
+    const {waypoints, zLevel} = useSelector((state) => state.scanner);
     const {x, y, z} = useSelector((state) => state.socket);
     const [editWaypointIndex, setEditWaypointIndex] = useState(null);
     
+console.log(zLevel)
+
     const onAddWaypoint = () => {
-        dispatch(addWaypoint({
+        if(waypoints.length === 0) {
+            dispatch(setZLevel(z));
+        }
+
+        const waypoint = {
             x: x,
             y: y,
             z: z
-        }));
+        }
+
+        dispatch(addWaypoint(waypoint));
     }
 
     return (

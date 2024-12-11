@@ -19,9 +19,6 @@ const ControlRow = (props) => {
     const {axis, cord} = props;
 	const dispatch = useDispatch();
     const {step, interval} = userSettings;
-    // const step = 1, interval = 1
-    console.log(userSettings)
-
 
 
     const sendStartMove = (direction) => {
@@ -81,7 +78,6 @@ const ControlRow = (props) => {
 
         if(isHolding){
             intervalId = setInterval(() => {
-                console.log("test")
                 // handleAxisChange(direction, axis);
                 sendHeartbeat(direction, axis);
             }, interval);

@@ -8,12 +8,12 @@ import { PerspectiveCamera } from "@react-three/drei";
 import Axes from "./Axes";
 import SceneToolbar from "./SceneToolbar";
 import { SceneProvider } from "./SceneProvider";
-import Waypoint from "./Waypoint";
-import ScanPlanner from "./Modals/ScanPlanner";
+import ScanPlanner from "./ScanPlanner/ScanPlanner";
+import WaypointLayer from "./WaypointLayer";
 
 const Scene = () => {
     const socketData = useSelector((state) => state.socket);
-    const {waypoints} = useSelector((state) => state.scanner);
+    // const {waypoints} = useSelector((state) => state.scanner);
     
     const cameraRef = useRef();
     const controlsRef = useRef();
@@ -40,11 +40,9 @@ const Scene = () => {
                     />
                     
 
-                    {waypoints.map((waypoint) => (
-                        <Waypoint key={waypoint.id} waypoint={waypoint} />
-                    ))}
-
+                    <WaypointLayer  />
                     <Axes />
+
                     <OrbitControls 
                         ref={controlsRef} 
                         enablePan={true}
@@ -57,13 +55,7 @@ const Scene = () => {
 
                 </Canvas>
 
-            <div>
-         
-            </div>
-                
-
                 {/* UI */}
-                {/* <ScanPlanner /> */}
 
                 <ScanPlanner />
 

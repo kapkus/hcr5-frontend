@@ -11,6 +11,7 @@ const initialState = {
 	notifications: [],
 	loading: [],
 	status: 'disconnected',
+	lidarSocketStatus: 'disconnected', // tcp lidar connection
 	servoStatus: 'off',
 	speed: 0
 };

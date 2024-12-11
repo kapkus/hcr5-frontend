@@ -23,6 +23,8 @@ export default {
             darkTransparent: 'rgba(0, 0, 0, 0.3)',
             darkerTransparent: 'rgba(0, 0, 0, 0.7)',
             lightBorder: "#d6d6d6",
+
+            
         }
     }
 

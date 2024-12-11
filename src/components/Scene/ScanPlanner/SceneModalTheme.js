@@ -23,7 +23,7 @@ const sceneModalTheme = createTheme({
             styleOverrides: {
                 root: {
                     pointerEvents: 'none',
-                    zIndex: 100000
+                    zIndex: 1100
                 }
             }
         },
