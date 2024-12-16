@@ -1,5 +1,12 @@
 import { enqueueNotification } from '../../utils/utils';
-import { updateStateFromMessage, addNotification, updateServoStatus, updatePosition, updateSpeed } from './socketSlice';
+import { 
+    updateStateFromMessage,
+    addNotification, 
+    updateServoStatus, 
+    updatePosition, 
+    updateSpeed, 
+    setLidarSocketStatus
+} from './socketSlice';
 
 const handleSocketMessage = (data, store) => {
     
@@ -27,6 +34,7 @@ const handleSocketMessage = (data, store) => {
             break;
         case 'lidarSocket': 
             console.log('lidarMsg', data);
+            store.dispatch(setLidarSocketStatus(data.value.status))
             break;
     }
 

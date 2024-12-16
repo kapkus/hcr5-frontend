@@ -11,6 +11,7 @@ import { BorderColor } from "@mui/icons-material";
 import { AiFillQuestionCircle } from "react-icons/ai";
 import { useLatticeStore } from "../../../hooks/api/useLatticeStore";
 import { sendSocketMessage } from "../../../store/socket/socketMiddleware";
+import { optimizePath } from "../../../utils/utils";
 
 const { colors } = appConfig.constants;
 const inputProps = {
@@ -67,12 +68,12 @@ const ScanPlanner = () => {
 
     const handleSendScanData = () => {
         const latticePoints = getLatticePoints();
-
+        const optimized = optimizePath(latticePoints);
         
         sendSocketMessage(
             {
-                type: 'verifyScanData',
-                data: latticePoints,
+                type: 'beginScan',
+                data: optimized,
                 zLevel: zLevel
             }
         );

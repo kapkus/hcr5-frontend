@@ -35,6 +35,9 @@ const socketSlice = createSlice({
 		setSocketStatus: (state, action) => {
 			state.status = action.payload;
 		},
+		setLidarSocketStatus: (state, action) => {
+			state.lidarSocketStatus = action.payload;
+		},
 		updateStateFromMessage: (state, action) => {
 			state.x = action.payload.x;
 			state.y = action.payload.y;
@@ -63,7 +66,8 @@ export const {
 	updateStateFromMessage,
 	updateServoStatus,
 	updatePosition,
-	updateSpeed
+	updateSpeed,
+	setLidarSocketStatus
 } = socketSlice.actions;
 
 export default socketSlice.reducer;
