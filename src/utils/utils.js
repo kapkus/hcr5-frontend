@@ -25,7 +25,7 @@ export const enqueueNotification = (data) => {
                 {data.msg || 'Something went wrong.'}
             </div>
         </div>
-      );
+    );
 
     const options = {
         key: new Date().getTime() + Math.random(),

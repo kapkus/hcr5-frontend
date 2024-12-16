@@ -1,6 +1,6 @@
 import React from "react";
 import { Toolbar } from "@mui/material";
-import SettingsModal from "../../components/Modals/SettingsModal";
+import ScansModal from "../../components/Modals/ScansModal";
 import SocketStatus from "../../components/WebSocket/SocketStatus";
 import { useSelector } from "react-redux";
 
@@ -18,7 +18,7 @@ const AppToolbar = () => {
                 </span>
             </div>
             <div>
-                <SettingsModal />
+                <ScansModal />
             </div>
         </div>
     </Toolbar>

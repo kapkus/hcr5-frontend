@@ -3,6 +3,7 @@ import { Box, Button } from "@mui/material";
 import { toggleScanPlanner } from "../../store/scanner/scannerSlice";
 import { useDispatch, useSelector } from "react-redux";
 import appConfig from "../../config/appConfig";
+import { sendSocketMessage } from "../../store/socket/socketMiddleware";
 
 const {colors} = appConfig.constants;
 
@@ -21,18 +22,26 @@ const ScanOptions = () => {
         dispatch(toggleScanPlanner());
     }
 
+    const onStopScanClick = () => {
+        sendSocketMessage({
+            type: 'endScan'
+        });
+    }
+
 
     return (
         <Box sx={{display: "flex", flexDirection: "column", gap: "8px"}}>
-            <Button variant="contained">
-                Start Scan
-            </Button>
             <Button variant="outlined" 
                     onClick={onSetupScanPlanClick}
                     style={scanPlanner ? activeButtonStyle : {} }        
             >
                 Setup scan plan
             </Button>
+
+            <Button onClick={onStopScanClick} variant="contained">
+                Stop Scan
+            </Button>
+            
             <Button variant="outlined">
                 Check motion
             </Button>

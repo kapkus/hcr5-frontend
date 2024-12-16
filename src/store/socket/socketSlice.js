@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Socket } from '../../utils/Socket';
-import { getAccessToken } from '../../utils/utils';
 
 const initialState = {
 	x: 0,

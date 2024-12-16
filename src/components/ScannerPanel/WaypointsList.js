@@ -8,6 +8,7 @@ import SingleWaypoint from "./SingleWaypoint";
 
 const {fontDefault} = appConfig.constants.colors;
 
+// TODO: zamienic nazwy z waypoints -> boundary
 const WaypointsList = () => {
     const dispatch = useDispatch();
     const {waypoints, zLevel} = useSelector((state) => state.scanner);
@@ -32,7 +33,7 @@ console.log(zLevel)
 
     return (
         <div style={{display: "flex", flexDirection: "column"}}>
-            <Button variant="outlined" onClick={onAddWaypoint}>Add waypoint</Button>
+            <Button variant="outlined" onClick={onAddWaypoint}>Add boundary</Button>
 
             <List
                 sx={{

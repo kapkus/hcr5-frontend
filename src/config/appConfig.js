@@ -7,6 +7,9 @@ export default {
         MAX_NEGATIVE_Y_VALUE: -1000,
         MAX_NEGATIVE_Z_VALUE: -1000,
 
+        dateFormat: 'YYYY-MM-DD',
+        dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
+
         colors: {
             active: '#50ad53',
             inactive: '#d95555',

@@ -30,14 +30,6 @@ const scannerSlice = createSlice({
 		setZLevel: (state, action) => {
 			state.zLevel = action.payload;
 		},
-		// changeWaypointOrder: (state, action) => {
-		// 	const { id, newPosition } = action.payload;
-		// 	const index = state.waypoints.findIndex(item => item.id === id);
-		// 	if (index !== -1) {
-		// 		const [movedItem] = state.waypoints.splice(index, 1);
-		// 		state.waypoints.splice(newPosition, 0, movedItem);
-		// 	}
-		// },
 		deleteWaypoint: (state, action) => {
 			state.waypoints = state.waypoints.filter(item => item.id !== action.payload);
 		},

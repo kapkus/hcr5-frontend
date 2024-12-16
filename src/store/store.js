@@ -5,6 +5,7 @@ import socketSlice from "./socket/socketSlice";
 import { userApi } from "./user/userApi";
 import socketMiddleware from "./socket/socketMiddleware";
 import scannerSlice from "./scanner/scannerSlice";
+import scanManagerSlice from "./scanManager/scanManagerSlice";
 
 export const store = configureStore({
     reducer: {
@@ -12,7 +13,8 @@ export const store = configureStore({
         user: userSlice,
         [userApi.reducerPath]: userApi.reducer,
         socket: socketSlice,
-        scanner: scannerSlice
+        scanner: scannerSlice,
+        scanManager: scanManagerSlice
         // app: appReducer
     },
     middleware: (getDefaultMiddleware) => 

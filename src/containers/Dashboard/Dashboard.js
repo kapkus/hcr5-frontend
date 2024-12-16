@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import ControlPanel from "../../components/ControlPanel/ControlPanel"
-import SettingsModal from "../../components/Modals/SettingsModal";
 import { useDispatch } from "react-redux";
 import { fetchUserAction } from "../../store/user/actions";
 import { useSelector } from "react-redux";
