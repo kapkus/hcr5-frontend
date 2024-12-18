@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 // import useFetchSettings from "../../hooks/api/useFetchSettings";
 // import { fetchUserAction } from "../../store/user/actions";
 import { TbHexagon3D } from "react-icons/tb";
-import { fetchScans } from "../../store/scanManager/actions";
+import { downloadBinaryScan, fetchScans, deleteScan } from "../../store/scanManager/actions";
 import { MdOutlineDelete as DeleteIcon } from "react-icons/md";
 import dayjs from "dayjs";
 import appConfig from "../../config/appConfig"
@@ -53,8 +53,12 @@ const ScansModal = () => {
         }
     }, [open])
 
-    const handleSettingsSave = () => {
+    const handleScanDelete = (item) => {
+        dispatch(deleteScan(item._id));
+    }
 
+    const handleDownloadBinaryFile = (item) => {
+        dispatch(downloadBinaryScan(item._id));
     }
 
     console.log(scans);
@@ -71,7 +75,7 @@ const ScansModal = () => {
             onClose={handleClose}
         >
             <Box sx={style}>
-                <div>Skany</div>
+                <div>Saved scans</div>
                 <div>
                     <List>
                         {scans.map((item) => (
@@ -86,13 +90,13 @@ const ScansModal = () => {
                                         </Tooltip>
 
                                         <Tooltip title={'Download binary file'}>
-                                            <IconButton edge="end" aria-label="binary-file">
+                                            <IconButton edge="end" aria-label="binary-file" onClick={() => handleDownloadBinaryFile(item)}>
                                                 <GoFileBinary />
                                             </IconButton>
                                         </Tooltip>
 
                                         <Tooltip title={'Delete scan'}>
-                                            <IconButton edge="end" aria-label="delete">
+                                            <IconButton edge="end" aria-label="delete" onClick={() => handleScanDelete(item)}>
                                                 <DeleteIcon />
                                             </IconButton>
                                         </Tooltip>
@@ -107,7 +111,10 @@ const ScansModal = () => {
                             </ListItemAvatar>
                             <ListItemText
                                 primary={item.scanFileName}
-                                secondary={dayjs(item.startTime).format(dateTimeFormat)}
+                                secondary={<span style={{display: 'flex', flexDirection: 'column'}}>
+                                    {item.startTime && <span style={{}}>Start time: {dayjs(item.startTime).format(dateTimeFormat)}</span>}
+                                    {item.endTime && <span>End time: {dayjs(item.endTime).format(dateTimeFormat)}</span>}
+                                </span>}
                             />
                             </ListItem>
                         ))}
@@ -115,7 +122,7 @@ const ScansModal = () => {
                 </div>
                 <div style={{display: "flex", justifyContent: "flex-end"}}>
                     {/* <Button>Zapisz</Button> */}
-                    <Button onClick={handleClose}>Zamknij</Button>
+                    <Button onClick={handleClose}>Close</Button>
                 </div>
             </Box>
         </Modal>
