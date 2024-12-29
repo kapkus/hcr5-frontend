@@ -1,13 +1,11 @@
 import React, { useRef, useState } from "react"
-import { Html } from "@react-three/drei";
 import appConfig from "../../../config/appConfig";
-import { Dialog, Paper, DialogContent, DialogContentText, DialogActions, Button, DialogTitle, ThemeProvider, TextField, Tooltip, IconButton } from "@mui/material";
+import { Dialog, Paper, DialogContent, DialogActions, Button, DialogTitle, ThemeProvider, TextField, Tooltip, IconButton } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import Draggable from "react-draggable";
 import sceneModalTheme from "./SceneModalTheme";
 import WaypointsList from "../../ScannerPanel/WaypointsList";
 import { toggleScanPlanner, setZLevel, setVerticalDistance, setHorizontalDistance } from "../../../store/scanner/scannerSlice";
-import { BorderColor } from "@mui/icons-material";
 import { AiFillQuestionCircle } from "react-icons/ai";
 import { useLatticeStore } from "../../../hooks/api/useLatticeStore";
 import { sendSocketMessage } from "../../../store/socket/socketMiddleware";
@@ -44,8 +42,9 @@ const PaperComponent = (props) => {
 const ScanPlanner = () => {
     const dispatch = useDispatch();
     const {scanPlanner: isEnabled, zLevel, verticalDistance, horizontalDistance} = useSelector((state) => state.scanner);
+    const [localVerticalDistance, setLocalVerticalDistance] = useState(verticalDistance);
+    const [localHorizontalDistance, setLocalHorizontalDistance] = useState(horizontalDistance);
     const { getLatticePoints } = useLatticeStore();
-    const [isDataSent, setIsDataSent] = useState(false);
 
     console.log(isEnabled);
 
@@ -54,19 +53,23 @@ const ScanPlanner = () => {
     }
 
     const onChangeZLevel = (e) => {
-        console.log(e.target.value)
-        dispatch(setZLevel(e.target.value))
+        console.log(e.target.value);
+        dispatch(setZLevel(e.target.value));
     }
 
-    const onChangeVerticalDistance = (e) => {
-        dispatch(setVerticalDistance(e.target.value))
+    const onChangeVerticalDistance = () => {
+        dispatch(setVerticalDistance(localVerticalDistance));
     }
 
-    const onChangeHorizontalDistance = (e) => {
-        dispatch(setHorizontalDistance(e.target.value))
+    const onChangeHorizontalDistance = () => {
+        dispatch(setHorizontalDistance(localHorizontalDistance));
     }
 
     const handleSendScanData = () => {
+
+        onChangeVerticalDistance();
+        onChangeHorizontalDistance();
+
         const latticePoints = getLatticePoints();
         const optimized = optimizePath(latticePoints);
         
@@ -131,9 +134,10 @@ const ScanPlanner = () => {
                                 size={"small"} 
                                 style={{marginLeft: '1rem'}}
                                 sx={textFieldStyles} 
-                                value={verticalDistance} 
-                                onChange={onChangeVerticalDistance}
+                                value={localVerticalDistance} 
+                                onChange={(e) => setLocalVerticalDistance(e.target.value)}
                             />
+                            <Button variant="contained" onClick={onChangeVerticalDistance}>SET</Button>
                         </div>
 
                         <div style={{display: "flex", alignItems: 'center'}}>
@@ -143,9 +147,10 @@ const ScanPlanner = () => {
                                 size={"small"} 
                                 style={{marginLeft: '1rem'}}
                                 sx={textFieldStyles} 
-                                value={horizontalDistance} 
-                                onChange={onChangeHorizontalDistance}
+                                value={localHorizontalDistance} 
+                                onChange={(e) => setLocalHorizontalDistance(e.target.value)}
                             />
+                            <Button variant="contained" onClick={onChangeHorizontalDistance}>SET</Button>
                         </div>
 
                     </div>

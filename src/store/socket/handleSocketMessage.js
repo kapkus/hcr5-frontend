@@ -5,7 +5,8 @@ import {
     updateServoStatus, 
     updatePosition, 
     updateSpeed, 
-    setLidarSocketStatus
+    setLidarSocketStatus,
+    setTcpList
 } from './socketSlice';
 
 const handleSocketMessage = (data, store) => {
@@ -35,6 +36,10 @@ const handleSocketMessage = (data, store) => {
         case 'lidarSocket': 
             console.log('lidarMsg', data);
             store.dispatch(setLidarSocketStatus(data.value.status))
+            break;
+        case 'tcpList': 
+            console.log('tcpList', data.value);
+            store.dispatch(setTcpList(data.value))
             break;
     }
 

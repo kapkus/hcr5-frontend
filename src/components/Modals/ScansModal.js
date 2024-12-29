@@ -1,19 +1,17 @@
 import React, { useEffect } from "react";
-import { Box, Modal, Button, List, ListItem, ListItemAvatar, ListItemText, IconButton, Avatar, Tooltip } from "@mui/material"
+import { Box, Modal, Button, List, ListItem, ListItemAvatar, ListItemText, IconButton, Avatar, Tooltip, Popover, TextField } from "@mui/material"
 import { useState } from 'react';
 import { useDispatch } from "react-redux";
-import { useFetchUserQuery } from "../../store/user/userApi";
 import { useSelector } from "react-redux";
-// import useFetchSettings from "../../hooks/api/useFetchSettings";
-// import { fetchUserAction } from "../../store/user/actions";
 import { TbHexagon3D } from "react-icons/tb";
-import { downloadBinaryScan, fetchScans, deleteScan } from "../../store/scanManager/actions";
+import { downloadBinaryScan, downloadPlyMap, fetchScans, deleteScan } from "../../store/scanManager/actions";
 import { MdOutlineDelete as DeleteIcon } from "react-icons/md";
 import dayjs from "dayjs";
 import appConfig from "../../config/appConfig"
 import { GoFileBinary } from "react-icons/go";
 import { TbFile3D } from "react-icons/tb";
 import { RiFilePptFill } from "react-icons/ri";
+import PopupState, {bindTrigger, bindPopover} from "material-ui-popup-state";
 
 const { dateTimeFormat } = appConfig.constants;
 
@@ -31,9 +29,20 @@ const style = {
     overflowY: 'auto',
   };
 
+const inputProps = {
+    type: 'number',
+    min: 0,
+    step: 0.01,
+    style: {
+        fontSize: '14px',
+        width: '3rem',
+    }
+}
+
 const ScansModal = () => {
     const dispatch = useDispatch();
     const scans = useSelector((state) => state.scanManager.items);
+    const [voxelSize, setVoxelSize] = useState('0.1')
     // const {data, isError, isLoading} = useSelector(state => state.user)
     // const userData = useSelector((state) => state.userApi.queries[`fetchUser(undefined)`]?.data);
 
@@ -46,9 +55,7 @@ const ScansModal = () => {
 
     useEffect(() => {
         if(open === true){
-            dispatch(fetchScans())
-            console.log("opened")
-            
+            dispatch(fetchScans())            
             // dispatch(fetchUserAction());
         }
     }, [open])
@@ -61,7 +68,13 @@ const ScansModal = () => {
         dispatch(downloadBinaryScan(item._id));
     }
 
-    console.log(scans);
+    const handleDownloadPlyMap = (item) => {
+        const data = {
+            voxelSize: voxelSize
+        }
+
+        dispatch(downloadPlyMap(item._id, data));
+    }
 
     return <div>
         <div style={{display: "flex", alignItems: "center", gap: '0.3rem'}}>
@@ -83,23 +96,89 @@ const ScansModal = () => {
                                 key={item._id}
                                 secondaryAction={
                                     <div style={{display: "flex", gap: 15}}>
-                                        <Tooltip title={'Download ply file'}>
-                                            <IconButton edge="end" aria-label="ply-file">
-                                                    <RiFilePptFill />
-                                            </IconButton>
-                                        </Tooltip>
+                                        <PopupState variant="popover" popupId="ply-popover">
+                                            {(popupState) => (
+                                                <>
+                                                    <Tooltip title={'Download ply file'}>
+                                                        <IconButton edge="end" aria-label="ply-file" {...bindTrigger(popupState)}>
+                                                            <RiFilePptFill />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <Popover
+                                                        {...bindPopover(popupState)}
+                                                        anchorOrigin={{
+                                                        vertical: 'bottom',
+                                                        horizontal: 'center',
+                                                        }}
+                                                        transformOrigin={{
+                                                        vertical: 'top',
+                                                        horizontal: 'center',
+                                                        }}
+                                                    >
+                                                        <Box sx={{padding: 1}}>
+                                                            <div style={{display: "flex", alignItems: "center", marginBottom: '0.5rem'}}>
+                                                                <span>Voxel size:</span>
+                                                                <TextField
+                                                                    inputProps={inputProps} 
+                                                                    size={"small"} 
+                                                                    style={{marginLeft: '1rem'}}
+                                                                    onChange={(e) => setVoxelSize(e.target.value)}
+                                                                    value={voxelSize}
+                                                                />
+                                                            </div>
+                                                            <Button sx={{width: '100%'}} variant="contained" onClick={() => handleDownloadPlyMap(item)}>
+                                                                Download
+                                                            </Button>
+                                                        </Box>
+                                                    </Popover>
+                                                </>
+                                                
+                                            )}
 
+                                        </PopupState>
+                                    
                                         <Tooltip title={'Download binary file'}>
                                             <IconButton edge="end" aria-label="binary-file" onClick={() => handleDownloadBinaryFile(item)}>
                                                 <GoFileBinary />
                                             </IconButton>
                                         </Tooltip>
 
-                                        <Tooltip title={'Delete scan'}>
-                                            <IconButton edge="end" aria-label="delete" onClick={() => handleScanDelete(item)}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Tooltip>
+                                        <PopupState variant="popover" popupId="delete-popover">
+                                            {(popupState) => (
+                                                <>
+                                                    <Tooltip title={'Delete scan'}>
+                                                        <IconButton edge="end" aria-label="delete" {...bindTrigger(popupState)}>
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <Popover
+                                                        {...bindPopover(popupState)}
+                                                        anchorOrigin={{
+                                                        vertical: 'bottom',
+                                                        horizontal: 'center',
+                                                        }}
+                                                        transformOrigin={{
+                                                        vertical: 'top',
+                                                        horizontal: 'center',
+                                                        }}
+                                                    >
+                                                        <Box sx={{padding: 1}}>
+                                                            <div style={{display: "flex", gap: 15}}>
+                                                                <Button variant="outlined" onClick={popupState.close}>Cancel</Button>
+                                                                <Button variant="contained" 
+                                                                    onClick={() => {
+                                                                        popupState.close();
+                                                                        handleScanDelete(item);
+                                                                    }}
+                                                                >
+                                                                    Delete
+                                                                </Button>
+                                                            </div>
+                                                        </Box>
+                                                    </Popover>
+                                                </>
+                                            )}
+                                        </PopupState>
                                     </div>
                                     
                                 }

@@ -4,7 +4,7 @@ import { authUser } from "../../api/auth";
 import { checkResponse } from "../../utils/request";
 import { setAccessToken } from "../../utils/utils";
 import { enqueueNotification } from "../../utils/utils";
-import { fetchScans as fetchScansRequest, deleteScan as deleteScanRequest, downladBinary as downloadBinaryScanRequest } from "../../api/scan";
+import { fetchScans as fetchScansRequest, deleteScan as deleteScanRequest, downladBinary as downloadBinaryScanRequest, downloadPlyMap as downloadPlyMapRequest } from "../../api/scan";
 import {fetchScansSuccess} from "./scanManagerSlice";
 
 export const fetchScans = () => async (dispatch) => {
@@ -62,6 +62,40 @@ export const downloadBinaryScan = (objectId) => async (dispatch) => {
         enqueueNotification(err)
     } finally {
         dispatch(loaderRemove({ actionType: 'DOWNLOAD_BINARY_SCAN' }));
+    }
+}
+
+export const downloadPlyMap = (objectId, data) => async (dispatch) => {
+    try {
+        dispatch(loaderPush({
+            label: 'Downloading ply map',
+            actionType: 'DOWNLOAD_PLY_MAP' 
+        }));
+    
+        const result = await downloadPlyMapRequest(objectId, data);
+        const check = checkResponse(result);
+
+        if (check) {
+            const fileName = `lidar_scan_${objectId}.ply`;
+            const blob = new Blob([result.data], { type: 'application/octet-stream' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+
+            document.body.appendChild(a);
+            a.click();
+
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+        } else {
+            enqueueNotification(result.response.data)
+        }
+    } catch (err) {
+        enqueueNotification(err)
+    } finally {
+        dispatch(loaderRemove({ actionType: 'DOWNLOAD_PLY_MAP' }));
     }
 }
 

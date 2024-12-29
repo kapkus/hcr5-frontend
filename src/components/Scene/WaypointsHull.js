@@ -11,7 +11,7 @@ const WaypointsHull = ({ waypoints, zLevel, horizontalDistance, verticalDistance
 		return matrix.length > 2 ? [...matrix, matrix[0]] : matrix;
 	}, [waypoints, zLevel]);
 
-	const latticePoints = React.useMemo(() => createLattice(waypoints, horizontalDistance, verticalDistance), [waypoints, horizontalDistance, verticalDistance]);
+	const latticePoints = React.useMemo(() => createLattice(waypoints, Number(horizontalDistance), Number(verticalDistance)), [waypoints, horizontalDistance, verticalDistance]);
 
 	useEffect(() => {
 		setLatticePoints(latticePoints);
@@ -49,17 +49,17 @@ const LatticePoints = ({ points, zLevel }) => {
 
 	return (
 		<instancedMesh ref={meshRef} args={[null, null, points.length]}>
-			<sphereGeometry args={[0.2, 16, 16]} />
+			<sphereGeometry args={[0.3, 16, 16]} />
 			<meshBasicMaterial color="red" />
 		</instancedMesh>
 	);
 };
 
-const createLattice = (waypoints, columns, rows) => {
+const createLattice = (waypoints, horizontalDistance, verticalDistance) => {
 	if (waypoints.length < 2) return [];
 
 	const boundingBox = getBoundingBox(waypoints);
-	const grid = makeGrid(boundingBox, columns, rows);
+    const grid = makeGrid(boundingBox, horizontalDistance, verticalDistance);
 
 	return grid.filter((point) => getPointsInPolygon(point, waypoints));
 };
@@ -76,22 +76,21 @@ const getBoundingBox = (waypoints) => {
 	);
 };
 
-const makeGrid = (boundingBox, columns, rows) => {
-	const stepX = (boundingBox.maxX - boundingBox.minX) / (columns - 1);
-	const stepY = (boundingBox.maxY - boundingBox.minY) / (rows - 1);
+const makeGrid = (boundingBox, horizontalDistance, verticalDistance) => {
+    if (horizontalDistance <= 0 || verticalDistance <= 0) {
+        throw new Error("Distances must be positive and greater than 0.");
+    }
 
-	const gridPoints = [];
-	for (let i = 0; i < columns; i++) {
-		for (let j = 0; j < rows; j++) {
-			gridPoints.push({
-				x: boundingBox.minX + i * stepX,
-				y: boundingBox.minY + j * stepY,
-			});
-		}
-	}
+    const gridPoints = [];
+    for (let x = boundingBox.minX; x <= boundingBox.maxX; x += horizontalDistance) {
+        for (let y = boundingBox.minY; y <= boundingBox.maxY; y += verticalDistance) {
+            gridPoints.push({ x, y });
+        }
+    }
 
-	return gridPoints;
+    return gridPoints;
 };
+
 
 const getPointsInPolygon = (point, vertices) => {
 	let isInside = false;

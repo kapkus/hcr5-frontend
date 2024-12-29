@@ -3,10 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
 	error: null,
 	waypoints: [], 
-	zLevel: 0,
-	scanPlanner: false,
-	verticalDistance: 10,
-	horizontalDistance: 10
+	zLevel: 0, 
+	scanPlanner: false, // is in scan planner mode
+	verticalDistance: 1, // scan vertical distance in mm
+	horizontalDistance: 1, // scan horizontal distance in mm
 }
 
 const scannerSlice = createSlice({
@@ -41,7 +41,7 @@ const scannerSlice = createSlice({
 		},
 		setHorizontalDistance: (state, action) => {
 			state.horizontalDistance = action.payload;
-		},
+		}
 	},
 });
 

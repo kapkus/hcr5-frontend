@@ -5,13 +5,15 @@ const initialState = {
 	y: 0,
 	z: 0,
 	step: 1,
-	holdInterval: 100,
+	holdInterval: 100, // button hold interval in ms
 	notifications: [],
 	loading: [],
-	status: 'disconnected',
+	status: 'disconnected', // ws connection status
 	lidarSocketStatus: 'disconnected', // tcp lidar connection
 	servoStatus: 'off',
-	speed: 0
+	speed: 0, // robot speed
+
+	tcpList: [] // list of robot tools
 };
 
 const socketSlice = createSlice({
@@ -51,6 +53,9 @@ const socketSlice = createSlice({
 		},
 		updateSpeed: (state, action) => {
 			state.speed = action.payload;
+		},
+		setTcpList: (state, action) => {
+			state.tcpList = action.payload;
 		}
   	},
 });
@@ -65,7 +70,8 @@ export const {
 	updateServoStatus,
 	updatePosition,
 	updateSpeed,
-	setLidarSocketStatus
+	setLidarSocketStatus,
+	setTcpList
 } = socketSlice.actions;
 
 export default socketSlice.reducer;
