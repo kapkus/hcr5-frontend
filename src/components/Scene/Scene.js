@@ -31,7 +31,7 @@ const Scene = () => {
                     <PerspectiveCamera ref={cameraRef} makeDefault position={[1800, 0, 1000]} near={0.1} far={5000}/>
                     <ambientLight intensity={0.5} />
                 
-                    <RobotUTool dimensions={[50, 50, 50]} position={[socketData.x, socketData.y, socketData.z]}/>
+                    <RobotUTool dimensions={[5, 5, 5]} position={[socketData.x, socketData.y, socketData.z]}/>
                     
                     <polarGridHelper 
                         args={[1000, 20, 20, 50, '#e3e3e3', '#e3e3e3']} 
